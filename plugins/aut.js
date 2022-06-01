@@ -26,6 +26,16 @@ var cbxs = {
     // BootNotification at start
     self.cp.call('BootNotification');
 
+
+    for(var i=1; i <= 2; i++) {
+      self.cp.call('StatusNotification', {
+        connectorId: i,
+        status: 'Available',
+        errorCode: 'NoError',
+        info: '',
+      });
+    }
+
     self.onConnectionEvent(function(type, cbId) {
       switch(type) {
       case 'connected':
