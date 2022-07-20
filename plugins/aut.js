@@ -406,7 +406,7 @@ setInterval(() => {
   for(var index in cbxs.connectors) {
     var c = cbxs.connectors[index];
     if(c.isCharging) {
-      const meter = Math.ceil(Math.random() * 100 + 50);
+      const meter = Math.ceil(Math.random() * 20 + 5);
       c.meterCurrent += meter;
       cbxs.actionsQueue.push({
         procedure: 'MeterValues',
