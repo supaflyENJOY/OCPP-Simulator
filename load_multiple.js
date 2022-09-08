@@ -5,11 +5,25 @@ function chargerGetId(index) {
   return `CHARGE_BOX_PERF_TEST_${index}`;
 }
 
-for (let i=0; i < chargersCount; i++) {
-  child_process.fork('./gir-ocppjs.js',
+let chargersProcesses = [];
+for (let i = 0; i < chargersCount; i++) {
+  const child = child_process.fork(
+    './gir-ocppjs.js',
     [
       'start_cp',
       steveUrl,
-      chargerGetId(i)
-    ]);
+      chargerGetId(i),
+    ],
+  );
+  child.on('close', exitHandler);
+  chargersProcesses.push(child);
 }
+
+function exitHandler() {
+  chargersProcesses.forEach(child => child.kill());
+}
+
+process.on('exit', exitHandler);
+process.on('SIGINT', exitHandler);
+process.on('SIGUSR1', exitHandler);
+process.on('SIGUSR2', exitHandler);
